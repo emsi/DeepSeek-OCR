@@ -21,6 +21,22 @@ uv pip install flash-attn==2.7.3 --no-build-isolation
 uv pip install matplotlib
 ```
 
+# Usage
+
+## vllm
+
+**<span style="color:red">⚠️ IMPORTANT: Change the INPUT_PATH/OUTPUT_PATH and other settings in the DeepSeek-OCR-master/DeepSeek-OCR-vllm/config.py</span>**
+```Shell
+cd DeepSeek-OCR-master/DeepSeek-OCR-vllm
+uv run run_dpsk_ocr_image.py
+````
+
+## transformers
+```Shell
+cd DeepSeek-OCR-master/DeepSeek-OCR-hf
+uv run run_dpsk_ocr.py
+```
+
 # Nvcc Installation (optional)
 Check your version of nvcc:
 ```Shell
@@ -139,21 +155,21 @@ pip install flash-attn==2.7.3 --no-build-isolation
 
 ## vLLM-Inference
 - VLLM:
->**Note:** change the INPUT_PATH/OUTPUT_PATH and other settings in the DeepSeek-OCR-master/DeepSeek-OCR-vllm/config.py
+>**Note:** **<span style="color:red">⚠️ IMPORTANT: Change the INPUT_PATH/OUTPUT_PATH and other settings in the DeepSeek-OCR-master/DeepSeek-OCR-vllm/config.py</span>**
 ```Shell
 cd DeepSeek-OCR-master/DeepSeek-OCR-vllm
 ```
 1. image: streaming output
 ```Shell
-uv run run_dpsk_ocr_image.py
+python run_dpsk_ocr_image.py
 ```
 2. pdf: concurrency ~2500tokens/s(an A100-40G)
 ```Shell
-uv run run_dpsk_ocr_pdf.py
+python run_dpsk_ocr_pdf.py
 ```
 3. batch eval for benchmarks
 ```Shell
-uv run run_dpsk_ocr_eval_batch.py
+python run_dpsk_ocr_eval_batch.py
 ```
 
 **[2025/10/23] The version of upstream [vLLM](https://docs.vllm.ai/projects/recipes/en/latest/DeepSeek/DeepSeek-OCR.html#installing-vllm):**
@@ -235,7 +251,7 @@ res = model.infer(tokenizer, prompt=prompt, image_file=image_file, output_path =
 or you can
 ```Shell
 cd DeepSeek-OCR-master/DeepSeek-OCR-hf
-uv run run_dpsk_ocr.py
+python run_dpsk_ocr.py
 ```
 ## Support-Modes
 The current open-source model supports the following modes:
