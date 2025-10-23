@@ -1,3 +1,54 @@
+# Just Works: DeepSeek-OCR: Contexts Optical Compression
+
+A DeepSeek-OCR that just works.
+
+# Prerequisits
+
+* [uv](https://docs.astral.sh/uv/installation)
+* nvcc 11.8+ (see [Nvcc Installation](#nvcc-installation))
+
+# Installation
+
+```Shell
+uv venv --python=python3.12.9
+source .venv/bin/activate
+
+uv pip install torch==2.6.0 torchvision==0.21.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu118
+wget https://github.com/vllm-project/vllm/releases/download/v0.8.5/vllm-0.8.5+cu118-cp38-abi3-manylinux1_x86_64.whl
+uv pip install vllm-0.8.5+cu118-cp38-abi3-manylinux1_x86_64.whl
+uv pip install -r requirements.txt
+uv pip install flash-attn==2.7.3 --no-build-isolation
+uv pip install matplotlib
+```
+
+# Nvcc Installation (optional)
+Check your version of nvcc:
+```Shell
+which nvcc && nvcc --version
+```
+If needed, install nvcc 11.8+ as follows:
+```Shell
+Remove existing nvcc installation:
+sudo apt remove -y nvidia-cuda-toolkit || true
+# 1) Add NVIDIA’s CUDA APT repo (keyring)
+. /etc/os-release
+UB=${VERSION_ID/./}     # e.g. 2204 for 22.04, 2404 for 24.04
+wget -q https://developer.download.nvidia.com/compute/cuda/repos/ubuntu${UB}/x86_64/cuda-keyring_1.1-1_all.deb
+sudo dpkg -i cuda-keyring_1.1-1_all.deb
+sudo apt-get update
+
+# 2) Install ONLY the toolkit (won’t touch your driver)
+sudo apt-get install -y cuda-toolkit-12-4
+
+# 3) Point your shell to it (user-level)
+echo 'export CUDA_HOME=/usr/local/cuda-12.4' >> ~/.bashrc
+echo 'export PATH=$CUDA_HOME/bin:$PATH'     >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+. ~/.bashrc
+
+```
+
+
 <!-- markdownlint-disable first-line-h1 -->
 <!-- markdownlint-disable html -->
 <!-- markdownlint-disable no-duplicate-header -->
@@ -94,15 +145,15 @@ cd DeepSeek-OCR-master/DeepSeek-OCR-vllm
 ```
 1. image: streaming output
 ```Shell
-python run_dpsk_ocr_image.py
+uv run run_dpsk_ocr_image.py
 ```
 2. pdf: concurrency ~2500tokens/s(an A100-40G)
 ```Shell
-python run_dpsk_ocr_pdf.py
+uv run run_dpsk_ocr_pdf.py
 ```
 3. batch eval for benchmarks
 ```Shell
-python run_dpsk_ocr_eval_batch.py
+uv run run_dpsk_ocr_eval_batch.py
 ```
 
 **[2025/10/23] The version of upstream [vLLM](https://docs.vllm.ai/projects/recipes/en/latest/DeepSeek/DeepSeek-OCR.html#installing-vllm):**
@@ -184,7 +235,7 @@ res = model.infer(tokenizer, prompt=prompt, image_file=image_file, output_path =
 or you can
 ```Shell
 cd DeepSeek-OCR-master/DeepSeek-OCR-hf
-python run_dpsk_ocr.py
+uv run run_dpsk_ocr.py
 ```
 ## Support-Modes
 The current open-source model supports the following modes:
